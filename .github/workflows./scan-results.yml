@@ -36,10 +36,10 @@ jobs:
 
     - name: Check if collection directory exists
       run: |
-        if [ -d "src/collection" ]; then echo "Directory exists"; else echo "Directory does not exist"; fi
+        if [ -d "scans/" ]; then echo "Directory exists"; else echo "Directory does not exist"; fi
 
     - name: List evidence-collection directory contents
-      run: ls -la src/collection/
+      run: ls -la scans/
 
     - name: Debug API Key
       run: echo "Tenable Access Key is set."
@@ -54,7 +54,7 @@ jobs:
       run: |
         # Activate the virtual environment and run the script with the python from venv
         source venv/bin/activate
-        ./venv/bin/python3 src/poam/commercial-tenable.py --download-path evidence-artifacts/commercial/tenable
+        ./venv/bin/python3 src/tenable.py --download-path scans/
 
     - name: Commit & Push changes
       uses: EndBug/add-and-commit@v7

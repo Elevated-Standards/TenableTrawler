@@ -49,8 +49,8 @@ jobs:
 
     - name: Run Tenable Scan Script
       env:
-        TIO_ACCESS_KEY: ${{ secrets.CORP_TENABLE_ACCESS_KEY }}
-        TIO_SECRET_KEY: ${{ secrets.CORP_TENABLE_SECRET_KEY }}
+        TIO_ACCESS_KEY: ${{ secrets.TENABLE_ACCESS_KEY }}
+        TIO_SECRET_KEY: ${{ secrets.TENABLE_SECRET_KEY }}
       run: |
         # Activate the virtual environment and run the script with the python from venv
         source venv/bin/activate

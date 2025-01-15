@@ -22,8 +22,8 @@ jobs:
 
       - name: Set environment variables for additional secrets
         env:
-          CORP_TIO_ACCESS_KEY: ${{ secrets.CORP_TENABLE_ACCESS_KEY }}
-          CORP_TIO_SECRET_KEY: ${{ secrets.CORP_TENABLE_SECRET_KEY }}
+          TIO_ACCESS_KEY: ${{ secrets.TENABLE_ACCESS_KEY }}
+          TIO_SECRET_KEY: ${{ secrets.TENABLE_SECRET_KEY }}
 
       - name: Git Global Config
         run: |

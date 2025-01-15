@@ -18,7 +18,7 @@ jobs:
 
       - name: Prepare Environment
         id: prep
-        run: /bin/bash .github/prep.sh
+        run: /bin/bash .github/workflows./bash/prep.sh
 
       - name: Set environment variables for additional secrets
         env:

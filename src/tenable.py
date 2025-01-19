@@ -5,6 +5,9 @@ import click
 import arrow
 from datetime import datetime
 
+tio = TenableIO('os.getenv("TIO_ACCESS_KEY")', 'os.getenv("TIO_SECRET_KEY")')
+
+
 @click.command()
 @click.option('--tio-access-key', 'access_key', envvar='TIO_ACCESS_KEY',
     help='Tenable.io API Access Key')

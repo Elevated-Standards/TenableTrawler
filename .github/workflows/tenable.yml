@@ -54,7 +54,7 @@ jobs:
       run: |
         # Activate the virtual environment and run the script with the python from venv
         source venv/bin/activate
-        ./venv/bin/python3 src/scans.py --download-path scans/
+        ./venv/bin/python3 scans.py --download-path scans/
 
     - name: Commit & Push changes
       uses: EndBug/add-and-commit@v7

@@ -14,8 +14,10 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+        pull-requests: write
+        contents: write
     outputs:
-      algolia_artifact: ${{ steps.define-ids.outputs.algolia_artifact }}
       artifact: ${{ steps.define-ids.outputs.artifact }}
     steps:
       - name: Checkout repository
@@ -23,31 +25,41 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Build docs using Writerside Docker builder
+        uses: JetBrains/writerside-github-action@v4
+        with:
+          instance: ${{ env.INSTANCE }}
+          artifact: ${{ env.ARTIFACT }}
+          docker-version: ${{ env.DOCKER_VERSION }}
+          location: docs
+
+      - name: Remove docs folder
+        run: rm -rf docs
+
+      - name: Unzip artifact
+        run: unzip -O UTF-8 -qq 'artifacts/${{ env.ARTIFACT }}' -d docs
+
+      - name: Revert logos
+        run: git checkout docs/logo-dark.png docs/logo-light.png docs/site.webmanifest
+
+      - name: Remove artifacts
+        run: rm -rf artifacts
+
       - name: Define instance id and artifacts
         id: define-ids
         run: |
           INSTANCE=${INSTANCE#*/}
           INSTANCE_ID_UPPER=$(echo "$INSTANCE" | tr '[:lower:]' '[:upper:]')
           ARTIFACT="webHelp${INSTANCE_ID_UPPER}2-all.zip"
-          ALGOLIA_ARTIFACT="algolia-indexes-${INSTANCE_ID_UPPER}.zip"
 
           # Print the values
           echo "INSTANCE_ID_UPPER: $INSTANCE_ID_UPPER"
           echo "ARTIFACT: $ARTIFACT"
-          echo "ALGOLIA_ARTIFACT: $ALGOLIA_ARTIFACT"
 
           # Set the environment variables and outputs
           echo "INSTANCE_ID_UPPER=$INSTANCE_ID_UPPER" >> $GITHUB_ENV
           echo "ARTIFACT=$ARTIFACT" >> $GITHUB_ENV
-          echo "ALGOLIA_ARTIFACT=$ALGOLIA_ARTIFACT" >> $GITHUB_ENV
           echo "artifact=$ARTIFACT" >> $GITHUB_OUTPUT
-          echo "algolia_artifact=$ALGOLIA_ARTIFACT" >> $GITHUB_OUTPUT
-
-      - name: Build docs using Writerside Docker builder
-        uses: JetBrains/writerside-github-action@v4
-        with:
-          instance: ${{ env.INSTANCE }}
-          docker-version: ${{ env.DOCKER_VERSION }}
 
       - name: Save artifact with build results
         uses: actions/upload-artifact@v4
@@ -56,7 +68,6 @@ jobs:
           path: |
             artifacts/${{ steps.define-ids.outputs.artifact }}
             artifacts/report.json
-            artifacts/${{ steps.define-ids.outputs.algolia_artifact }}
           retention-days: 7
   deploy:
     environment:

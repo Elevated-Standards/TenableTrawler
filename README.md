@@ -1,7 +1,6 @@
 # TenableTrawler
 
-Pulls Scan Results using Tenable API and combines the different Tenable Scan Results into a organized output.And POAM Ready.
-
+Pulls scan results using the Tenable API and combines the different Tenable scan results into an organized output that is POAM-ready.
 
 `pip install pytenable`
 

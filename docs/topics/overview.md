@@ -69,7 +69,8 @@ END_DATE=$(date -u +"%Y-%m-%dT%H-%M-%SZ")
 
 # cloud.tenable.com
 
-python3 src/cloud_trawler.py --download-path scans/cloud/vulmgt/${YEAR}/${MONTH}/
+python3 src/cloud_trawler.py --download-path \
+              scans/cloud/vulmgt/${YEAR}/${MONTH}/
 
 python3 src/cloud_trawler-webapp-tio.py \
             --output-dir scans/cloud/was/${YEAR}/${MONTH}/ \
@@ -77,7 +78,8 @@ python3 src/cloud_trawler-webapp-tio.py \
 
 ## fedcloud.tenable.com
 
-python3 src/fedcloud_tenabletrawler.py --download-path scans/fedcloud/vulmgt/${YEAR}/${MONTH}/
+python3 src/fedcloud_tenabletrawler.py --download-path \
+               scans/fedcloud/vulmgt/${YEAR}/${MONTH}/
 
 python3 src/fedcloud_trawler-webapp-tio.py \
             --output-dir scans/fedcloud/was/${YEAR}/${MONTH}/ \

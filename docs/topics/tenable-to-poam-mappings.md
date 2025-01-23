@@ -1,3 +1,17 @@
 # Tenable to POAM Mappings
 
-Start typing here...
+
+## Regular Scans to POAM
+
+
+
+
+
+
+## Web App Scans to POAM
+
+
+
+
+
+

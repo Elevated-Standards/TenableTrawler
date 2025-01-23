@@ -11,5 +11,7 @@
         <toc-element topic="running-in-terminal.md"/>
         <toc-element topic="tenable-to-poam-mappings.md"/>
         <toc-element topic="python-code.md"/>
+        <toc-element topic="Contributing-guide.md"/>
+        <toc-element topic="Release-notes.md"/>
     </toc-element>
 </instance-profile>

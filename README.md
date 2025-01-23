@@ -14,9 +14,10 @@ TenableTrawler (Cloud OR FedCloud) is a Python-based project designed to pull sc
 - Python 3.x
 - Tenable API Access Key and Secret Key
 - Required Python packages listed in `requirements.txt`:
-  - `tenable`
+  - `pytenable`
   - `click`
   - `arrow`
+  - `requests`
 
 ## Installation
 

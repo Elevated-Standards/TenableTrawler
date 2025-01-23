@@ -4,9 +4,9 @@
 
 <instance-profile id="docs"
                  name="Docs"
-                 start-page="starter-topic.md">
+                 start-page="overview.md">
 
-    <toc-element topic="starter-topic.md">
+    <toc-element topic="overview.md">
         <toc-element topic="workflows.md"/>
         <toc-element topic="running-in-terminal.md"/>
         <toc-element topic="tenable-to-poam-mappings.md"/>

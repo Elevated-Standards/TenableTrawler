@@ -1,0 +1,76 @@
+name: Cloud Tenable VM (Using Pytenable)
+
+on:
+  schedule:
+    - cron: '0 0 31 1,3,5,7,8,10,12 *'  # Last day of 31-day months
+    - cron: '0 0 30 4,6,9,11 *'         # Last day of 30-day months
+    - cron: '0 0 28 2 *'                # Last day of February (non-leap years)
+    - cron: '0 0 29 2 *'                # Last day of February (leap years)
+  workflow_dispatch:
+env:
+  CI_COMMIT_MESSAGE: New Cloud Tenable VM Scan Results
+permissions:
+  id-token: write   
+  contents: write   
+  pull-requests: write    
+jobs:
+  run-tenable-scans-results:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+
+      - name: Set up Python environment
+        run: |
+            python3 -m venv venv
+            source venv/bin/activate
+            python3 -m pip install --upgrade pip
+            python3 -m pip install -r requirements.txt
+
+      - name: Generate END_DATE
+        id: generate-dates
+        run: |
+              YEAR=$(date +"%Y")
+              MONTH=$(date +"%B")
+              DAY=$(date +"%d")
+              END_DATE=$(date -u +"%Y-%m-%dT%H-%M-%SZ")
+              echo "END_DATE=${END_DATE}" >> $GITHUB_ENV            
+
+      - name: Create Directory for Scans
+        run: mkdir -p scans/cloud/vulmgt/${YEAR}/${MONTH}    
+              
+      - name: Verify setup and collection directory
+        run: |
+            source venv/bin/activate
+            python3 -m pip show pytenable || echo "pytenable not installed."
+            if [ -d "scans/" ]; then echo "Directory exists"; else echo "Directory does not exist"; fi
+            ls -la scans/
+      
+      - name: Debug API Key and Environment Variables
+        run: |
+            echo "Tenable Access Key is set."
+            printenv | grep TIO     
+
+      - name: Run Tenable Scan Script
+        env:
+          TIO_ACCESS_KEY: ${{ secrets.CORP_TENABLE_ACCESS_KEY }}
+          TIO_SECRET_KEY: ${{ secrets.CORP_TENABLE_SECRET_KEY }}
+        run: |
+          # Activate the virtual environment and run the script with the python from venv
+          source venv/bin/activate
+          ./venv/bin/python3 src/cloud_trawler.py --download-path scans/cloud/vulmgt/${YEAR}/${MONTH} 
+
+      - name: Upload Commercial Tenable Reports
+        uses: actions/upload-artifact@main
+        with:
+          name: tenable-reports
+          path: scans/cloud/
+
+      - name: Commit and Push Results
+        run: |
+         git config --local user.name "GitHub Actions"
+         git config --local user.email "actions@github.com"
+         git add -A
+         git commit -m "${{ env.CI_COMMIT_MESSAGE }}"
+         git push origin HEAD:${{ github.ref }}

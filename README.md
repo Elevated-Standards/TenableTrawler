@@ -90,10 +90,10 @@ python3 src/fedcloud_trawler-webapp-tio.py \
 
 The project includes several GitHub Actions workflows to automate the fetching and exporting of scan results:
 
-- Cloud Tenable VM Scan Results: cloud-scan-results.yml
-- Cloud WebAppScanning Scan Results: cloud-was-results-tio.yml
-- FedCloud Tenable VM Scan Results: fedcloud-scan-results.yml
-- FedCloud WebAppScanning Scan Results: fedcloud-was-results-tio.yml
+- Cloud Tenable VM Scan Results: `cloud-scan-results.yml`
+- Cloud WebAppScanning Scan Results: `cloud-was-results-tio.yml`
+- FedCloud Tenable VM Scan Results: `fedcloud-scan-results.yml`
+- FedCloud WebAppScanning Scan Results: `fedcloud-was-results-tio.yml`
 
 
 These workflows are triggered on a schedule and can also be manually triggered via the GitHub Actions interface.
